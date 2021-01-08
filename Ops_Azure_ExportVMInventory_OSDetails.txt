@@ -1,21 +1,4 @@
-Param(
-    [Parameter(Mandatory = $true,
-              HelpMessage = "File name of the audit report",
-              Position = 0)]
-    [ValidateNotNullOrEmpty()]
-    [string]
-    $FileName,
-
-    [Parameter(Mandatory = $true,
-              HelpMessage = "Location where the audit report is stored",
-              Position = 1)]
-    [ValidateNotNullOrEmpty()]
-    [string]
-    $Path
-)
-
 $subscriptions = Get-AzSubscription
-$date = Get-Date -UFormat "%Y_%m_%d_%H%M%S"
 
 class VmCsv {
     [Object]${SubscriptionId}
