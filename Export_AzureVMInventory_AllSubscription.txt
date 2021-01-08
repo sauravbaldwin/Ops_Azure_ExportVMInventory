@@ -1,13 +1,13 @@
-Connect-AzAccount
+Connect-AzAccount                                                           #Login Azure Portal#
 $vmobjs = @()
-$Subscriptions = Get-AzSubscription
+$Subscriptions = Get-AzSubscription                                         #Run the script across all subscriptions#
 foreach ($sub in $Subscriptions)
 {
     Get-AzSubscription -SubscriptionName $sub.Name | Set-AzContext
 $vms = Get-AzVM -status
-foreach ($vm in $vms)
+foreach ($vm in $vms)                                                        #Scan each VM's to read thier details#      
     {
-        $vmInfo = [pscustomobject]@{
+        $vmInfo = [pscustomobject]@{                                         #Details of VM which will be captured#
                 'Name'=$vm.Name
                 'ResourceGroupName' = $vm.ResourceGroupName
                 'Subscription Name'=$sub.Name
@@ -21,6 +21,6 @@ foreach ($vm in $vms)
             $vmobjs += $vmInfo
     }
 }
-$vmobjs | Export-Csv -Path C:\Users\****************.csv
+$vmobjs | Export-Csv -Path C:\Users\****************.csv                       #Create a csv file and export the VM list with all details#
 Write-Host "VM list written to the csv file"
-Invoke-Item C:\Users\****************.csv
+Invoke-Item C:\Users\****************.csv                                      #Open the file once the script is completed#
