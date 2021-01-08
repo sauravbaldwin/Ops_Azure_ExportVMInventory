@@ -1,0 +1,26 @@
+Connect-AzAccount
+$vmobjs = @()
+$Subscriptions = Get-AzSubscription
+foreach ($sub in $Subscriptions)
+{
+    Get-AzSubscription -SubscriptionName $sub.Name | Set-AzContext
+$vms = Get-AzVM -status
+foreach ($vm in $vms)
+    {
+        $vmInfo = [pscustomobject]@{
+                'Name'=$vm.Name
+                'ResourceGroupName' = $vm.ResourceGroupName
+                'Subscription Name'=$sub.Name
+                'VmSize'=$vm.HardwareProfile.VmSize
+                'VmId' = $vm.VmId
+                'Location' = $vm.Location
+                'OS'=$vm.StorageProfile.OsDisk.OsType
+                'VMStatus'=$vm.PowerState
+                'Resource Id'=$vm.Id
+                 }
+            $vmobjs += $vmInfo
+    }
+}
+$vmobjs | Export-Csv -Path C:\Users\****************.csv
+Write-Host "VM list written to the csv file"
+Invoke-Item C:\Users\****************.csv
